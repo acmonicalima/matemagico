@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Navio Matemágico: Batalha dos Inteiros</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- TELA INICIAL -->
+  <div id="tela-inicial" class="tela-inicial">
+    <img src="assets/fundo_navio.png" alt="Fundo Navio Matemágico" class="fundo-tela-inicial">
+    <h1 class="titulo-jogo">Navio Matemágico: Batalha dos Inteiros</h1>
+
+    <!-- CONTAINER DE LOGIN -->
+    <div class="login-container">
+      <div class="jogador-form">
+        <h2>Jogador 1</h2>
+        <input type="text" id="nome-jogador1" placeholder="Seu nome" required />
+        <input type="text" id="turma-jogador1" placeholder="Sua turma" />
+      </div>
+      <div class="jogador-form">
+        <h2>Jogador 2</h2>
+        <input type="text" id="nome-jogador2" placeholder="Seu nome" required />
+        <input type="text" id="turma-jogador2" placeholder="Sua turma" />
+      </div>
+      <button onclick="iniciarJogo()">Iniciar Jogo</button>
+      <button id="btn-regras" onclick="mostrarRegras()">Como Jogar</button>
+    </div>
+  </div>
+
+  <!-- POPUP DE REGRAS -->
+  <div id="popup-regras" class="popup-regras">
+    <div class="popup-conteudo">
+      <span onclick="fecharRegras()" class="fechar">&times;</span>
+      <h2>🎯 Regras do Jogo</h2>
+      <p><strong>1.</strong> Cada jogador responde uma conta matemática por vez.</p>
+      <p><strong>2.</strong> Se acertar, pode atacar no tabuleiro tentando afundar um navio.</p>
+      <p><strong>3.</strong> Acerte todos os navios antes que o tempo acabe!</p>
+      <p><strong>4.</strong> Tempo total: 4 minutos.</p>
+      <p><strong>5.</strong> Acertos valem +1 ponto. Navios afundados valem +10 pontos.</p>
+    </div>
+  </div>
+
+  <!-- ÁREA DO JOGO -->
+  <div id="jogo" class="jogo" style="display: none;">
+    
+    <div class="modo-jogo">
+      <p><strong id="vez-jogador">Vez do Jogador 1</strong></p>
+      <p id="cronometro">⏰ Tempo restante: 240s</p>
+    </div>
+
+    <div class="placar">
+      <p id="placar-texto">Jogador 1: 0 | Jogador 2: 0</p>
+    </div>
+
+    <!-- CONTEÚDO DO JOGO -->
+    <div class="conteudo-jogo">
+
+      <!-- CARTAS E ÁREA DA CONTA -->
+      <div class="carta-e-resposta">
+        <div class="cartas-lateral">
+          <h3>Jogue uma carta!</h3>
+          <div id="monte-cartas" class="monte-cartas"></div>
+        </div>
+
+        <div class="area-conta">
+          <p id="conta">Selecione uma carta primeiro.</p>
+          <input type="number" id="resposta" placeholder="Sua resposta..." />
+          <button id="btn-verificar" onclick="verificarResposta()">Verificar</button>
+          <p id="feedback"></p>
+          <div class="botao-novo-jogo">
+            <button onclick="reiniciarJogo()">Novo Jogo</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABULEIRO NO CENTRO -->
+      <div class="tabuleiro-completo">
+
+        <!-- NÚMEROS no topo -->
+        <div class="eixo-x">
+          <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+          <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+          <span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+          <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span>
+          <span>20</span>
+        </div>
+
+        <!-- LETRAS À ESQUERDA + TABULEIRO -->
+        <div class="tabuleiro-area">
+          <div class="eixo-y">
+            <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
+            <span>F</span><span>G</span><span>H</span><span>I</span><span>J</span>
+            <span>K</span><span>L</span><span>M</span><span>N</span><span>O</span>
+            <span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span>
+          </div>
+          <div id="tabuleiro" class="tabuleiro"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RODAPÉ FIXO -->
+    <div class="rodape">
+      <p>CIEP BRIZOLÃO 183 - JOÃO VITTA ™</p>
+      <p>Mônica Lima - Animação Cultural</p>
+    </div>
+
+    <!-- SONS -->
+    <audio id="som-acerto-conta" src="sounds/certo.mp3"></audio>
+    <audio id="som-conta-errada" src="sounds/contaerrada.mp3"></audio>
+    <audio id="som-acerto-tabuleiro" src="sounds/acerto.mp3"></audio>
+    <audio id="som-erro-tabuleiro" src="sounds/erro.mp3"></audio>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
