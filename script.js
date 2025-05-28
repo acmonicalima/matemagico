@@ -7,15 +7,17 @@ let intervaloCronometro;
 let contaAtual = null;
 let tabuleiroLiberado = false;
 
+// Função principal para iniciar o jogo
 function iniciarJogo() {
   const nome1 = document.getElementById("nome-jogador1").value.trim();
   const nome2 = document.getElementById("nome-jogador2").value.trim();
+
   if (!nome1 || !nome2) {
     alert("Por favor, preencha os nomes dos dois jogadores.");
     return;
   }
 
-  // Esconde tela inicial
+  // Esconde tela inicial e mostra o jogo
   document.getElementById("tela-inicial").style.display = "none";
   document.getElementById("jogo").style.display = "block";
 
@@ -32,6 +34,7 @@ function iniciarJogo() {
   intervaloCronometro = setInterval(atualizarCronometro, 1000);
 }
 
+// Atualiza o cronômetro regressivo
 function atualizarCronometro() {
   const minutos = Math.floor(tempoRestante / 60);
   const segundos = tempoRestante % 60;
@@ -44,6 +47,7 @@ function atualizarCronometro() {
   }
 }
 
+// Finaliza o jogo por tempo esgotado
 function finalizarJogo() {
   const nome1 = document.getElementById("nome-jogador1").value || "Jogador 1";
   const nome2 = document.getElementById("nome-jogador2").value || "Jogador 2";
@@ -61,6 +65,7 @@ function finalizarJogo() {
   reiniciarJogo();
 }
 
+// Cria a carta "?"
 function criarMonteCartas() {
   const monte = document.getElementById("monte-cartas");
   monte.innerHTML = "";
@@ -71,6 +76,7 @@ function criarMonteCartas() {
   monte.appendChild(carta);
 }
 
+// Gera uma conta matemática aleatória
 function virarCarta() {
   const tipos = ["+", "-", "*", "/"];
   const tipo = tipos[Math.floor(Math.random() * tipos.length)];
@@ -78,23 +84,27 @@ function virarCarta() {
   let a = Math.floor(Math.random() * (faixaNumeros * 2 + 1)) - faixaNumeros;
   let b = Math.floor(Math.random() * (faixaNumeros * 2 + 1)) - faixaNumeros;
 
-  if (tipo === "/" && b === 0) b = 1;
+  // Evita divisão por zero e resultados decimais
+  if (tipo === "/") {
+    while (b === 0 || a % b !== 0) {
+      b = Math.floor(Math.random() * (faixaNumeros * 2 + 1)) - faixaNumeros;
+    }
+  }
 
-  switch(tipo) {
+  // Calcula a conta
+  switch (tipo) {
     case "+": contaAtual = a + b; break;
     case "-": contaAtual = a - b; break;
     case "*": contaAtual = a * b; break;
-    case "/":
-      while (b === 0 || a % b !== 0) {
-        b = Math.floor(Math.random() * (faixaNumeros * 2 + 1)) - faixaNumeros;
-      }
-      contaAtual = Math.floor(a / b);
-      break;
+    case "/": contaAtual = Math.floor(a / b); break;
   }
 
-  if (contaAtual === 0 || contaAtual === null) return virarCarta(); // Evita zero e null
+  // Garante que a conta não seja zero ou null
+  if (contaAtual === 0 || contaAtual === null) {
+    return virarCarta(); // Gera outra conta
+  }
 
-  // Mostra tipo da operação acima da conta
+  // Exibe o tipo da operação acima da conta
   const tipoOperacao = {
     "+": "Adição",
     "-": "Subtração",
@@ -107,6 +117,7 @@ function virarCarta() {
     ${a} ${tipo} (${b}) = ?
   `;
 
+  // Carta virada com tipo e conta
   const monte = document.getElementById("monte-cartas");
   monte.innerHTML = "";
   const cartaVirada = document.createElement("div");
@@ -123,6 +134,7 @@ function virarCarta() {
   tabuleiroLiberado = true;
 }
 
+// Verifica se a resposta está certa
 function verificarResposta() {
   const resposta = parseInt(document.getElementById("resposta").value);
   const feedback = document.getElementById("feedback");
@@ -138,7 +150,7 @@ function verificarResposta() {
     feedback.style.color = "green";
     tocarSom("certo");
 
-    // Adiciona ponto pro jogador da vez
+    // Adiciona ponto ao jogador da vez
     if (vezDoJogador === 1) {
       placarJogador1++;
     } else {
@@ -171,6 +183,7 @@ function verificarResposta() {
   contaAtual = null;
 }
 
+// Cria o tabuleiro de batalha naval
 function criarTabuleiro() {
   const tabuleiro = document.getElementById("tabuleiro");
   tabuleiro.innerHTML = "";
@@ -191,10 +204,11 @@ function criarTabuleiro() {
   gerarNavios();
 }
 
+// Posiciona navios aleatoriamente
 function gerarNavios() {
   const letras = "ABCDEFGHIJKLMNOPQRST".split("");
   const numeros = [...Array(21).keys()];
-  const quantidadeNavios = Math.floor(420 * 0.4); // 40%
+  const quantidadeNavios = Math.floor(420 * 0.4); // 40% de navios
   const navios = [];
 
   while (navios.length < quantidadeNavios) {
@@ -206,9 +220,9 @@ function gerarNavios() {
   }
 
   localStorage.setItem("navios", JSON.stringify(navios));
-  return navios;
 }
 
+// Ataca uma célula do tabuleiro
 function atacarCelula(letra, numero) {
   const navios = JSON.parse(localStorage.getItem("navios")) || [];
   const index = navios.findIndex(nav => nav[0] === letra && nav[1] === numero);
@@ -253,6 +267,7 @@ function atacarCelula(letra, numero) {
   criarMonteCartas();
 }
 
+// Passa a vez pro próximo jogador
 function proximoJogador() {
   vezDoJogador = vezDoJogador === 1 ? 2 : 1;
   const nome = vezDoJogador === 1
@@ -261,12 +276,14 @@ function proximoJogador() {
   document.getElementById("vez-jogador").textContent = `Vez do ${nome}`;
 }
 
+// Atualiza o placar com nomes reais
 function atualizarPlacar() {
   const nome1 = document.getElementById("nome-jogador1").value || "Jogador 1";
   const nome2 = document.getElementById("nome-jogador2").value || "Jogador 2";
   document.getElementById("placar-texto").textContent = `${nome1}: ${placarJogador1} | ${nome2}: ${placarJogador2}`;
 }
 
+// Reinicia o jogo
 function reiniciarJogo() {
   placarJogador1 = 0;
   placarJogador2 = 0;
@@ -282,6 +299,7 @@ function reiniciarJogo() {
   localStorage.removeItem("navios");
 }
 
+// Toca sons diferentes conforme a ação
 function tocarSom(tipo) {
   const somAcertoConta = document.getElementById("som-acerto-conta");
   const somErroConta = document.getElementById("som-conta-errada");
@@ -315,10 +333,12 @@ function tocarSom(tipo) {
   }
 }
 
-// Funções do pop-up de regras
+// Abre pop-up das regras
 function mostrarRegras() {
   document.getElementById("popup-regras").style.display = "block";
 }
+
+// Fecha pop-up das regras
 function fecharRegras() {
   document.getElementById("popup-regras").style.display = "none";
 }
