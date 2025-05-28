@@ -81,10 +81,10 @@ function virarCarta() {
   if (tipo === "/" && b === 0) b = 1;
 
   switch(tipo) {
-    case "+": contaAtual = a + b; break;
-    case "-": contaAtual = a - b; break;
-    case "*": contaAtual = a * b; break;
-    case "/":
+    case "adição": contaAtual = a + b; break;
+    case "subtração": contaAtual = a - b; break;
+    case "multiplicação": contaAtual = a * b; break;
+    case "divisão":
       while (b === 0 || a % b !== 0) {
         b = Math.floor(Math.random() * (faixaNumeros * 2 + 1)) - faixaNumeros;
       }
