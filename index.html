@@ -10,10 +10,10 @@
 
   <!-- TELA INICIAL -->
   <div id="tela-inicial" class="tela-inicial">
-  <img src="assets/fundo_navio.png" alt="Fundo Navio Matemágico" class="fundo-tela-inicial">
+    <img src="fundo_navio.png" alt="Fundo Navio Matemágico" class="fundo-tela-inicial">
     <h1 class="titulo-jogo">Navio Matemágico: Batalha dos Inteiros</h1>
 
-    <!-- CONTAINER DE LOGIN -->
+    <!-- Container de Login -->
     <div class="login-container">
       <div class="jogador-form">
         <h2>Jogador 1</h2>
@@ -45,7 +45,8 @@
 
   <!-- ÁREA DO JOGO -->
   <div id="jogo" class="jogo" style="display: none;">
-    
+
+    <!-- MODOS DE JOGO E PLACAR -->
     <div class="modo-jogo">
       <p><strong id="vez-jogador">Vez do Jogador 1</strong></p>
       <p id="cronometro">⏰ Tempo restante: 240s</p>
@@ -55,30 +56,17 @@
       <p id="placar-texto">Jogador 1: 0 | Jogador 2: 0</p>
     </div>
 
-    <!-- CONTEÚDO DO JOGO -->
+    <!-- TODO O CONTEÚDO DO JOGO -->
     <div class="conteudo-jogo">
 
-      <!-- CARTAS E ÁREA DA CONTA -->
-      <div class="carta-e-resposta">
-        <div class="cartas-lateral">
-          <h3>Jogue uma carta!</h3>
-          <div id="monte-cartas" class="monte-cartas"></div>
-        </div>
-
-        <div class="area-conta">
-          <p id="conta">Selecione uma carta primeiro.</p>
-          <input type="number" id="resposta" placeholder="Sua resposta..." />
-          <button id="btn-verificar" onclick="verificarResposta()">Verificar</button>
-          <p id="feedback"></p>
-          <div class="botao-novo-jogo">
-            <button onclick="reiniciarJogo()">Novo Jogo</button>
-          </div>
-        </div>
+      <!-- CARTAS NA LATERAL -->
+      <div class="cartas-lateral">
+        <h3>Jogue uma carta!</h3>
+        <div id="monte-cartas" class="monte-cartas"></div>
       </div>
 
       <!-- TABULEIRO NO CENTRO -->
       <div class="tabuleiro-completo">
-
         <!-- NÚMEROS no topo -->
         <div class="eixo-x">
           <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
@@ -99,6 +87,18 @@
           <div id="tabuleiro" class="tabuleiro"></div>
         </div>
 
+        <!-- ÁREA DA CONTA -->
+        <div class="area-conta">
+          <p id="conta">Selecione uma carta primeiro.</p>
+          <input type="number" id="resposta" placeholder="Sua resposta..." />
+          <button onclick="verificarResposta()" id="btn-verificar">Verificar</button>
+          <p id="feedback"></p>
+        </div>
+
+        <!-- BOTÃO NOVO JOGO -->
+        <div class="botao-novo-jogo">
+          <button onclick="reiniciarJogo()">Novo Jogo</button>
+        </div>
       </div>
     </div>
 
@@ -109,10 +109,11 @@
     </div>
 
     <!-- SONS -->
-    <audio id="som-acerto-conta" src="sounds/certo.mp3"></audio>
-    <audio id="som-conta-errada" src="sounds/contaerrada.mp3"></audio>
-    <audio id="som-acerto-tabuleiro" src="sounds/acerto.mp3"></audio>
-    <audio id="som-erro-tabuleiro" src="sounds/erro.mp3"></audio>
+    <audio id="som-acerto-conta" src="certo.mp3"></audio>
+    <audio id="som-conta-errada" src="contaerrada.mp3"></audio>
+    <audio id="som-acerto-tabuleiro" src="acerto.mp3"></audio>
+    <audio id="som-erro-tabuleiro" src="erro.mp3"></audio>
+
   </div>
 
   <script src="script.js"></script>
