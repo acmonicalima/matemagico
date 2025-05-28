@@ -81,10 +81,10 @@ function virarCarta() {
   if (tipo === "/" && b === 0) b = 1;
 
   switch(tipo) {
-    case "adição": contaAtual = a + b; break;
-    case "subtração": contaAtual = a - b; break;
-    case "multiplicação": contaAtual = a * b; break;
-    case "divisão":
+    case "+": contaAtual = a + b; break;
+    case "-": contaAtual = a - b; break;
+    case "*": contaAtual = a * b; break;
+    case "/":
       while (b === 0 || a % b !== 0) {
         b = Math.floor(Math.random() * (faixaNumeros * 2 + 1)) - faixaNumeros;
       }
@@ -92,10 +92,18 @@ function virarCarta() {
       break;
   }
 
-  if (contaAtual === 0) return virarCarta(); // Evita zero
+  if (contaAtual === 0 || contaAtual === null) return virarCarta(); // Evita zero e null
+
+  // Mostra tipo da operação acima da conta
+  const tipoOperacao = {
+    "+": "Adição",
+    "-": "Subtração",
+    "*": "Multiplicação",
+    "/": "Divisão"
+  }[tipo];
 
   document.getElementById("conta").innerHTML = `
-    <strong>${tipo}</strong><br>
+    <strong>${tipoOperacao}</strong><br>
     ${a} ${tipo} (${b}) = ?
   `;
 
@@ -103,10 +111,12 @@ function virarCarta() {
   monte.innerHTML = "";
   const cartaVirada = document.createElement("div");
   cartaVirada.classList.add("monte-cartas", "carta-virada");
+
   cartaVirada.innerHTML = `
-    <strong>${tipo}</strong><br>
+    <strong>${tipoOperacao}</strong><br>
     ${a} ${tipo} (${b})
   `;
+
   monte.appendChild(cartaVirada);
 
   document.getElementById("tabuleiro").style.pointerEvents = "auto";
@@ -128,11 +138,13 @@ function verificarResposta() {
     feedback.style.color = "green";
     tocarSom("certo");
 
+    // Adiciona ponto pro jogador da vez
     if (vezDoJogador === 1) {
       placarJogador1++;
     } else {
       placarJogador2++;
     }
+
     atualizarPlacar();
 
     setTimeout(() => {
@@ -215,7 +227,14 @@ function atacarCelula(letra, numero) {
     document.querySelector(`[data-coord='["${letra}",${numero}]']`).textContent = "💥";
     feedback.textContent = "💥 Acertou um navio!";
     feedback.style.color = "green";
-    placarJogador1 += 10;
+
+    // Adiciona 10 pontos ao jogador da vez
+    if (vezDoJogador === 1) {
+      placarJogador1 += 10;
+    } else {
+      placarJogador2 += 10;
+    }
+
     atualizarPlacar();
     tocarSom("acerto");
   } else {
