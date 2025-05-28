@@ -48,6 +48,7 @@ function finalizarJogo() {
   const nome1 = document.getElementById("nome-jogador1").value || "Jogador 1";
   const nome2 = document.getElementById("nome-jogador2").value || "Jogador 2";
   let resultado = "";
+
   if (placarJogador1 > placarJogador2) {
     resultado = `🏆 ${nome1} venceu!\n${nome1}: ${placarJogador1}\n${nome2}: ${placarJogador2}`;
   } else if (placarJogador2 > placarJogador1) {
@@ -55,6 +56,7 @@ function finalizarJogo() {
   } else {
     resultado = `🤝 Empate!\n${nome1}: ${placarJogador1}\n${nome2}: ${placarJogador2}`;
   }
+
   alert(`⏱️ Tempo esgotado!\n\n${resultado}`);
   reiniciarJogo();
 }
@@ -259,4 +261,45 @@ function reiniciarJogo() {
   document.getElementById("jogo").style.display = "none";
   document.getElementById("tela-inicial").style.display = "block";
   localStorage.removeItem("navios");
+}
+
+function tocarSom(tipo) {
+  const somAcertoConta = document.getElementById("som-acerto-conta");
+  const somErroConta = document.getElementById("som-conta-errada");
+  const somAcertoTabuleiro = document.getElementById("som-acerto-tabuleiro");
+  const somErroTabuleiro = document.getElementById("som-erro-tabuleiro");
+
+  somAcertoConta.pause(); somAcertoConta.currentTime = 0;
+  somErroConta.pause(); somErroConta.currentTime = 0;
+  somAcertoTabuleiro.pause(); somAcertoTabuleiro.currentTime = 0;
+  somErroTabuleiro.pause(); somErroTabuleiro.currentTime = 0;
+
+  let som = null;
+
+  switch (tipo) {
+    case "certo":
+      som = somAcertoConta;
+      break;
+    case "contaerrada":
+      som = somErroConta;
+      break;
+    case "acerto":
+      som = somAcertoTabuleiro;
+      break;
+    case "tabuleiro_erro":
+      som = somErroTabuleiro;
+      break;
+  }
+
+  if (som) {
+    som.play().catch(err => console.log("Erro ao tocar som:", err));
+  }
+}
+
+// Funções do pop-up de regras
+function mostrarRegras() {
+  document.getElementById("popup-regras").style.display = "block";
+}
+function fecharRegras() {
+  document.getElementById("popup-regras").style.display = "none";
 }
